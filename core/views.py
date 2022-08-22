@@ -9,7 +9,9 @@ from .models import Profile
 
 @login_required(login_url='signin')
 def index(request):
-    return render(request,'index.html')
+    user_object=User.objects.get(username=request.user.username)
+    user_profile=Profile.objects.get(user=user_object)
+    return render(request,'index.html',{'user_profile':user_profile})
 
 def signup(request):
     
@@ -62,12 +64,13 @@ def logout(request):
 
 @login_required(login_url='signin') 
 def settings(request):
+
     
     user_profile=Profile.objects.get(user=request.user)
     if request.method == 'POST':
-        print("\n\n\n\n in settings")
+        
         if request.FILES.get('profileimg')==None:
-            print("\n\n\n not gettin")
+            
             image=user_profile.profileimg
             bio=request.POST ['bio']
             location=request.POST['location']
@@ -78,7 +81,7 @@ def settings(request):
             user_profile.save()
         
         if request.FILES.get('profileimg')!=None:
-            print("\n\n\n gettin")
+            
             image=request.FILES.get('profileimg')
             bio=request.POST ['bio']
             location=request.POST['location']
@@ -93,3 +96,8 @@ def settings(request):
         
         
     return render(request,'setting.html',{'user_profile': user_profile})
+
+@login_required(login_url='signin') 
+def upload(request):
+    return HttpResponse('upload')
+    
