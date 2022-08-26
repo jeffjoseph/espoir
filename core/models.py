@@ -19,6 +19,7 @@ class Profile(models.Model):
 class Post(models.Model):
     id=models.UUIDField(primary_key=True,default=uuid.uuid4)
     user=models.CharField(max_length=100)
+    caption=models.TextField(null=True)
     image=models.ImageField(upload_to='post_images')
     created_at=models.DateTimeField(default=datetime.now)
     likes=models.IntegerField(default=0)
